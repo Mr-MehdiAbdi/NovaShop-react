@@ -1,4 +1,21 @@
 import { useState } from 'react';
+import { Route } from 'react-router-dom';
+import CheckoutPage from './pages/CheckoutPage';
+import MainPage from './pages/MainPage';
+import ProductsPage from './pages/ProductsPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import PageNotFound from './pages/PageNotFound';
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/products" element={<ProductsPage />} />
+      <Route path="/products/:id" element={<ProductDetailsPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
+  );
+}
 
 const categories = ['همه محصولات', 'موبایل', 'لپ تاپ', 'هدفون', 'ساعت هوشمند', 'گیمینگ'];
 function createProductArtwork(category, title, accent, background) {
