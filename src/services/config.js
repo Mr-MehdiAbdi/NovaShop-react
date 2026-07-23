@@ -64,7 +64,7 @@ api.interceptors.response.use(
     }
 
     if (shouldShowToast) {
-      toast.error(normalizedError.message || 'خطا در دریافت اطلاعات');
+      toast.error(normalizedError.message || 'Error while fetching data');
     }
 
     return Promise.reject(normalizedError);

@@ -20,7 +20,7 @@ function ProductsProvider({ children }) {
         setProducts(response.products);
       } catch (error) {
         console.error('Error fetching products:', error);
-        toast.error(error?.message || 'خطا در دریافت محصولات');
+        toast.error(error?.message || 'Error while loading products');
         setError(error);
       } finally {
         setLoading(false);
