@@ -7,11 +7,13 @@ import '@fontsource/vazirmatn/800.css';
 import './index.css';
 import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <App />
+      <Toaster richColors position="top-center" dir="rtl" />
     </BrowserRouter>
   </StrictMode>
 );
