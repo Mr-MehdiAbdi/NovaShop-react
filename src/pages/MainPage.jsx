@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiClock, FiShield, FiTruck } from 'react-icons/fi';
 import SiteHeader from '../components/SiteHeader';
@@ -38,6 +38,63 @@ function MainPage() {
   }, [products]);
 
   const heroDeal = discountedProducts[0] || null;
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
+
+  const heroSlides = useMemo(() => {
+    const source = discountedProducts.length ? discountedProducts : featuredProducts;
+    const tones = [
+      {
+        badge: 'AMAZING OFFER',
+        heading: "Today's Spotlight Collection",
+        description: 'Handpicked essentials with fast shipping and secure checkout.',
+      },
+      {
+        badge: 'FLASH PICK',
+        heading: 'Fresh Deals, Updated Daily',
+        description: 'Discover trending products curated for smart daily shopping.',
+      },
+      {
+        badge: 'LIMITED DROP',
+        heading: 'Premium Picks For Your Cart',
+        description: 'Quality products, clear pricing, and a frictionless checkout flow.',
+      },
+    ];
+
+    return source.slice(0, 5).map((product, index) => {
+      const tone = tones[index % tones.length];
+      return {
+        id: product.id,
+        title: product.title,
+        category: product.category || 'General',
+        price: product.price,
+        image: product.images?.[0] || product.thumbnail,
+        ...tone,
+      };
+    });
+  }, [discountedProducts, featuredProducts]);
+
+  const currentHeroSlide = heroSlides[activeHeroIndex] || null;
+
+  useEffect(() => {
+    if (!heroSlides.length) {
+      return;
+    }
+
+    if (activeHeroIndex >= heroSlides.length) {
+      setActiveHeroIndex(0);
+      return;
+    }
+
+    if (heroSlides.length === 1) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveHeroIndex((prevIndex) => (prevIndex + 1) % heroSlides.length);
+    }, 4200);
+
+    return () => window.clearInterval(intervalId);
+  }, [activeHeroIndex, heroSlides]);
 
   const averagePrice = useMemo(() => {
     if (!products.length) {
@@ -72,7 +129,7 @@ function MainPage() {
     return (
       <div className="theme-page text-[#12324f]">
         <SiteHeader />
-        <main className="w-full max-w-6xl px-4 py-16 mx-auto md:px-8">
+        <main className="mx-auto w-full max-w-6xl px-4 py-16 md:px-8">
           <div className="rounded-2xl border border-[#f1c4c4] bg-[#fff5f5] p-6 text-[#8a2f2f]">
             <h2 className="text-xl font-black">Could not load store data</h2>
             <p className="mt-2 text-sm">{error.message}</p>
@@ -89,108 +146,156 @@ function MainPage() {
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute -left-16 top-10 h-56 w-56 rounded-full bg-[#dce8f3]/70 blur-3xl animate-float-slow" />
-          <div className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-[#d4e2ee]/55 blur-3xl animate-float-slower" />
+          <div className="pointer-events-none absolute -left-20 top-8 h-64 w-64 rounded-full bg-[#dce8f3]/75 blur-3xl animate-float-slow" />
+          <div className="pointer-events-none absolute -right-16 bottom-0 h-72 w-72 rounded-full bg-[#d4e2ee]/60 blur-3xl animate-float-slower" />
 
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-[1.1fr_0.9fr] md:px-8 md:py-24">
-            <div className="space-y-6">
-              <p className="glass-chip inline-flex rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-[0.16em] text-[#3d6484]">
-                Trusted Daily Essentials Store
-              </p>
+          <div className="mx-auto w-full max-w-6xl px-4 pb-8 pt-8 md:px-8 md:pb-12 md:pt-10">
+            <article className="relative overflow-hidden rounded-3xl border border-[#cfe0f1] bg-linear-to-br from-[#0f4f80] via-[#1e6598] to-[#2f80b7] p-6 text-white shadow-[0_20px_44px_rgba(14,53,83,0.28)] md:min-h-97.5 md:p-8">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/15 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-20 left-0 h-64 w-64 rounded-full bg-[#8dc8eb]/25 blur-3xl" />
 
-              <h1 className="max-w-xl text-4xl font-black leading-[1.05] tracking-tight text-[#0f2740] md:text-6xl">
-                Everything You Need,
-                <br />
-                Delivered Faster.
-              </h1>
+              {currentHeroSlide ? (
+                <>
+                  <div className="relative z-10 grid items-center gap-6 md:grid-cols-[1fr_0.75fr]">
+                    <div>
+                      <p className="inline-flex rounded-full border border-white/35 bg-white/15 px-3 py-1 text-xs font-black tracking-[0.14em]">
+                        {currentHeroSlide.badge}
+                      </p>
+                      <h1 className="mt-4 text-3xl font-black leading-[1.12] md:text-5xl">
+                        {currentHeroSlide.heading}
+                      </h1>
+                      <p className="mt-3 max-w-xl text-sm leading-7 text-[#e6f2fb] md:text-base">
+                        {currentHeroSlide.description}
+                      </p>
 
-              <p className="max-w-lg text-base leading-7 text-[#5d7690] md:text-lg">
-                Shop electronics, groceries, beauty, and home supplies in one place with secure
-                checkout, clear pricing, and fast shipping updates.
-              </p>
+                      <div className="mt-5 flex flex-wrap items-center gap-3">
+                        <Link
+                          to={`/products/${currentHeroSlide.id}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-black text-[#1d5f91] transition hover:bg-[#edf6fd]"
+                        >
+                          Explore this amazing offer
+                          <FiArrowRight className="h-4 w-4" />
+                        </Link>
+                        <Link
+                          to="/products"
+                          className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-white/20"
+                        >
+                          See all amazing offers
+                        </Link>
+                      </div>
 
-              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#6a8098]">
-                <span className="glass-chip rounded-full px-3 py-1">Free shipping over $50</span>
-                <span className="glass-chip rounded-full px-3 py-1">30-day returns</span>
-                <span className="glass-chip rounded-full px-3 py-1">Secure payments</span>
-              </div>
+                      <div className="mt-6 grid grid-cols-3 gap-2.5 text-center text-xs font-bold sm:max-w-lg">
+                        <div className="rounded-xl border border-white/28 bg-white/12 px-3 py-2">
+                          <p className="text-[11px] text-[#d7ebfa]">Products</p>
+                          <p className="mt-1 text-lg font-black text-white">{products.length}</p>
+                        </div>
+                        <div className="rounded-xl border border-white/28 bg-white/12 px-3 py-2">
+                          <p className="text-[11px] text-[#d7ebfa]">Avg Price</p>
+                          <p className="mt-1 text-lg font-black text-white">${averagePrice}</p>
+                        </div>
+                        <div className="rounded-xl border border-white/28 bg-white/12 px-3 py-2">
+                          <p className="text-[11px] text-[#d7ebfa]">Active Carts</p>
+                          <p className="mt-1 text-lg font-black text-white">{carts.length}</p>
+                        </div>
+                      </div>
+                    </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <div className="relative z-10 flex items-center justify-center rounded-3xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+                      <img
+                        src={currentHeroSlide.image}
+                        alt={currentHeroSlide.title}
+                        className="max-h-56 w-auto object-contain drop-shadow-[0_18px_28px_rgba(0,0,0,0.28)] md:max-h-72"
+                        loading="lazy"
+                        decoding="async"
+                      />
+
+                      <div className="absolute bottom-3 left-3 rounded-2xl bg-white/20 px-3 py-2 backdrop-blur-sm">
+                        <p className="line-clamp-1 text-xs font-black tracking-[0.08em] text-[#d7ebfa]">
+                          {currentHeroSlide.category}
+                        </p>
+                        <p className="line-clamp-1 text-sm font-black text-white">
+                          {currentHeroSlide.title}
+                        </p>
+                        <p className="mt-0.5 text-lg font-black text-white">
+                          ${currentHeroSlide.price}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      {heroSlides.map((slide, index) => (
+                        <button
+                          key={slide.id}
+                          type="button"
+                          onClick={() => setActiveHeroIndex(index)}
+                          className={`h-2 rounded-full transition-all ${
+                            index === activeHeroIndex
+                              ? 'w-8 bg-white'
+                              : 'w-2 bg-white/55 hover:bg-white/75'
+                          }`}
+                          aria-label={`Go to slide ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveHeroIndex((prevIndex) =>
+                            prevIndex === 0 ? heroSlides.length - 1 : prevIndex - 1
+                          )
+                        }
+                        className="rounded-full border border-white/40 bg-white/10 px-3 py-1.5 text-sm font-bold text-white transition hover:bg-white/20"
+                        aria-label="Previous slide"
+                      >
+                        Prev
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveHeroIndex((prevIndex) => (prevIndex + 1) % heroSlides.length)
+                        }
+                        className="rounded-full border border-white/40 bg-white/10 px-3 py-1.5 text-sm font-bold text-white transition hover:bg-white/20"
+                        aria-label="Next slide"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="relative z-10 py-10 text-center">
+                  <p className="text-lg font-black text-white">Amazing offers are loading...</p>
+                </div>
+              )}
+            </article>
+
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {topCategories.slice(0, 4).map((category) => (
                 <Link
+                  key={category.name}
                   to="/products"
-                  className="rounded-full bg-linear-to-r from-[#234d72] to-[#3b78a6] px-6 py-3 text-sm font-extrabold text-white shadow-[0_14px_28px_rgba(35,77,114,0.2)] transition-all hover:-translate-y-0.5 hover:from-[#1d4161] hover:to-[#31658d]"
+                  className="glass-panel rounded-2xl px-4 py-3 transition-colors hover:bg-white/95"
                 >
-                  Shop now
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#5d82a3]">
+                    Category Spotlight
+                  </p>
+                  <p className="mt-1 truncate text-base font-black text-[#173a59]">
+                    {category.name}
+                  </p>
+                  <p className="mt-0.5 text-xs font-semibold text-[#6d8baa]">
+                    {category.count} products
+                  </p>
                 </Link>
-
-                <Link
-                  to="/checkout"
-                  className="glass-chip rounded-full px-6 py-3 text-sm font-bold text-[#315d86] transition-colors hover:bg-white/90"
-                >
-                  View cart flow
-                </Link>
-              </div>
-            </div>
-
-            <div className="glass-panel rounded-3xl p-5 md:p-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <article
-                  className="glass-panel-strong rounded-2xl p-4 animate-fade-up"
-                  style={{ animationDelay: '80ms' }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#5d82a3]">
-                    In-Stock Items
-                  </p>
-                  <p className="mt-2 text-2xl font-black text-[#163855]">{products.length}</p>
-                  <p className="mt-1 text-sm text-[#547697]">
-                    Freshly listed and ready to order today.
-                  </p>
-                </article>
-
-                <article
-                  className="glass-panel-strong rounded-2xl p-4 animate-fade-up"
-                  style={{ animationDelay: '170ms' }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#5d82a3]">
-                    Popular Categories
-                  </p>
-                  <p className="mt-2 text-2xl font-black text-[#163855]">{topCategories.length}</p>
-                  <p className="mt-1 text-sm text-[#547697]">
-                    From daily groceries to smart devices.
-                  </p>
-                </article>
-
-                <article
-                  className="glass-panel-strong rounded-2xl p-4 animate-fade-up"
-                  style={{ animationDelay: '260ms' }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#5d82a3]">
-                    Average Price
-                  </p>
-                  <p className="mt-2 text-2xl font-black text-[#163855]">${averagePrice}</p>
-                  <p className="mt-1 text-sm text-[#547697]">
-                    Balanced pricing across our top picks.
-                  </p>
-                </article>
-
-                <article
-                  className="glass-panel-strong rounded-2xl p-4 animate-fade-up"
-                  style={{ animationDelay: '350ms' }}
-                >
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#5d82a3]">
-                    Active Carts
-                  </p>
-                  <p className="mt-2 text-2xl font-black text-[#163855]">{carts.length}</p>
-                  <p className="mt-1 text-sm text-[#547697]">
-                    {totalUnitsInCarts} items waiting for checkout.
-                  </p>
-                </article>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="w-full max-w-6xl px-4 pb-10 mx-auto md:px-8">
+        <section className="mx-auto w-full max-w-6xl px-4 pb-10 md:px-8">
           <div className="grid gap-3 md:grid-cols-3">
             <article className="glass-panel rounded-2xl p-4">
               <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-br from-[#edf4f9] to-[#ffffff] text-[#3b6f99]">
@@ -224,8 +329,8 @@ function MainPage() {
           </div>
         </section>
 
-        <section className="w-full max-w-6xl px-4 pb-10 mx-auto md:px-8">
-          <div className="flex items-center justify-between gap-3 mb-4">
+        <section className="mx-auto w-full max-w-6xl px-4 pb-10 md:px-8">
+          <div className="mb-4 flex items-center justify-between gap-3">
             <h2 className="text-2xl font-black tracking-tight text-[#0f2740] md:text-3xl">
               Shop by Category
             </h2>
@@ -375,8 +480,8 @@ function MainPage() {
           </div>
         </section>
 
-        <section className="w-full max-w-6xl px-4 pb-16 mx-auto md:px-8">
-          <div className="flex items-end justify-between gap-3 mb-6">
+        <section className="mx-auto w-full max-w-6xl px-4 pb-16 md:px-8">
+          <div className="mb-6 flex items-end justify-between gap-3">
             <div>
               <h2 className="text-2xl font-black tracking-tight text-[#0f2740] md:text-3xl">
                 Featured Products
