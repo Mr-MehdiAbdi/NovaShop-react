@@ -41,6 +41,12 @@ function normalizeAxiosError(error) {
 // Attach token before every request
 api.interceptors.request.use(
   (config) => {
+    // Only attach token when a request explicitly opts in.
+    const shouldAttachAuth = config.withAuth === true;
+    if (!shouldAttachAuth) {
+      return config;
+    }
+
     const token = getAccessToken();
 
     if (token) {
