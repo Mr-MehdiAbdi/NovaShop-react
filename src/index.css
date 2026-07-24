@@ -1,51 +1,47 @@
 @import 'tailwindcss';
 
 :root {
-  --page-grad-a: #f8fafc;
-  --page-grad-b: #edf3f8;
-  --page-radial-a: rgba(138, 177, 214, 0.18);
-  --page-radial-b: rgba(117, 165, 198, 0.14);
-  --page-radial-c: rgba(68, 139, 198, 0.08);
-  --glass-surface: rgba(255, 255, 255, 0.74);
-  --glass-surface-strong: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(186, 205, 223, 0.6);
-  --glass-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  --glass-chip-bg: rgba(255, 255, 255, 0.82);
-  --glass-chip-border: rgba(198, 213, 229, 0.75);
-  --theme-text-main: #20364d;
-  --theme-text-strong: #10273d;
-  --theme-text-soft: #5f7690;
-  --theme-text-muted: #8ea3b8;
-  --theme-accent: #2f6ea8;
-  --theme-accent-strong: #184d7a;
+  --page-grad-a: #fff7f8;
+  --page-grad-b: #f4f5f7;
+  --page-radial-a: rgba(239, 57, 78, 0.12);
+  --page-radial-b: rgba(255, 149, 113, 0.12);
+  --page-radial-c: rgba(255, 119, 136, 0.07);
+  --glass-surface: rgba(255, 255, 255, 0.78);
+  --glass-surface-strong: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(245, 189, 198, 0.62);
+  --glass-shadow: 0 18px 42px rgba(120, 41, 53, 0.1);
+  --glass-chip-bg: rgba(255, 247, 249, 0.88);
+  --glass-chip-border: rgba(245, 198, 207, 0.8);
+  --theme-text-main: #3a3c43;
+  --theme-text-strong: #24262d;
+  --theme-text-soft: #676a74;
+  --theme-text-muted: #9195a0;
+  --theme-accent: #ef394e;
+  --theme-accent-strong: #d9233a;
 }
 
 :root[data-theme='dark'] {
-  --page-grad-a: #09131d;
-  --page-grad-b: #0d1826;
-  --page-radial-a: rgba(49, 96, 138, 0.22);
-  --page-radial-b: rgba(53, 118, 150, 0.16);
-  --page-radial-c: rgba(44, 144, 182, 0.1);
-  --glass-surface: rgba(15, 25, 38, 0.78);
-  --glass-surface-strong: rgba(18, 31, 47, 0.9);
-  --glass-border: rgba(106, 138, 170, 0.24);
-  --glass-shadow: 0 22px 50px rgba(0, 0, 0, 0.34);
-  --glass-chip-bg: rgba(21, 38, 57, 0.82);
-  --glass-chip-border: rgba(90, 123, 158, 0.34);
-  --theme-text-main: #e4edf6;
-  --theme-text-strong: #f7fbff;
-  --theme-text-soft: #aebfd2;
-  --theme-text-muted: #748aa2;
-  --theme-accent: #70b1e3;
-  --theme-accent-strong: #9fd3ff;
+  --page-grad-a: #1c1f26;
+  --page-grad-b: #171a21;
+  --page-radial-a: rgba(239, 57, 78, 0.22);
+  --page-radial-b: rgba(228, 111, 84, 0.16);
+  --page-radial-c: rgba(233, 87, 103, 0.11);
+  --glass-surface: rgba(42, 38, 46, 0.82);
+  --glass-surface-strong: rgba(35, 32, 39, 0.93);
+  --glass-border: rgba(255, 145, 162, 0.25);
+  --glass-shadow: 0 22px 50px rgba(0, 0, 0, 0.36);
+  --glass-chip-bg: rgba(56, 44, 49, 0.86);
+  --glass-chip-border: rgba(255, 141, 158, 0.34);
+  --theme-text-main: #efe5e8;
+  --theme-text-strong: #fff7f8;
+  --theme-text-soft: #d6c4ca;
+  --theme-text-muted: #ab959d;
+  --theme-accent: #ff8091;
+  --theme-accent-strong: #ffa3b0;
 }
 
 body {
-  background:
-    radial-gradient(circle at 8% 10%, var(--page-radial-a), transparent 30%),
-    radial-gradient(circle at 92% 14%, var(--page-radial-b), transparent 28%),
-    radial-gradient(circle at 45% 58%, var(--page-radial-c), transparent 40%),
-    linear-gradient(to bottom, var(--page-grad-a), var(--page-grad-b));
+  background: linear-gradient(165deg, var(--page-grad-a) 0%, var(--page-grad-b) 100%);
   background-attachment: fixed;
   transition: background 280ms ease;
   color: var(--theme-text-main);
@@ -56,11 +52,7 @@ body {
 
 .theme-page {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 8% 10%, var(--page-radial-a), transparent 32%),
-    radial-gradient(circle at 90% 15%, var(--page-radial-b), transparent 30%),
-    radial-gradient(circle at 50% 60%, var(--page-radial-c), transparent 42%),
-    linear-gradient(to bottom, var(--page-grad-a), var(--page-grad-b));
+  background: linear-gradient(165deg, var(--page-grad-a) 0%, var(--page-grad-b) 100%);
   color: var(--theme-text-main);
 }
 
@@ -94,7 +86,9 @@ body {
 :root[data-theme='dark'] .text-\[\#12324f\],
 :root[data-theme='dark'] .text-\[\#0f2740\],
 :root[data-theme='dark'] .text-\[\#224264\],
-:root[data-theme='dark'] .text-\[\#173a59\] {
+:root[data-theme='dark'] .text-\[\#173a59\],
+:root[data-theme='dark'] .text-\[\#2f3036\],
+:root[data-theme='dark'] .text-\[\#2d2f36\] {
   color: var(--theme-text-strong);
 }
 
@@ -105,7 +99,20 @@ body {
 :root[data-theme='dark'] .text-\[\#6b89a8\],
 :root[data-theme='dark'] .text-\[\#5d82a3\],
 :root[data-theme='dark'] .text-\[\#315d86\],
-:root[data-theme='dark'] .text-\[\#4f6f8e\] {
+:root[data-theme='dark'] .text-\[\#4f6f8e\],
+:root[data-theme='dark'] .text-\[\#63656f\],
+:root[data-theme='dark'] .text-\[\#5c5f69\],
+:root[data-theme='dark'] .text-\[\#676a74\],
+:root[data-theme='dark'] .text-\[\#6f6266\],
+:root[data-theme='dark'] .text-\[\#8a5a63\],
+:root[data-theme='dark'] .text-\[\#8d6670\],
+:root[data-theme='dark'] .text-\[\#8d7b81\],
+:root[data-theme='dark'] .text-\[\#7a4a53\],
+:root[data-theme='dark'] .text-\[\#5b4d51\],
+:root[data-theme='dark'] .text-\[\#4a4d56\],
+:root[data-theme='dark'] .text-\[\#d4c7ca\],
+:root[data-theme='dark'] .text-\[\#e1d4d7\],
+:root[data-theme='dark'] .text-\[\#cebfc3\] {
   color: var(--theme-text-soft);
 }
 
@@ -116,14 +123,28 @@ body {
 :root[data-theme='dark'] .text-\[\#23608e\],
 :root[data-theme='dark'] .text-\[\#1f4f7f\],
 :root[data-theme='dark'] .text-\[\#4e89bf\],
-:root[data-theme='dark'] .text-\[\#76a7d0\] {
+:root[data-theme='dark'] .text-\[\#76a7d0\],
+:root[data-theme='dark'] .text-\[\#d9243a\],
+:root[data-theme='dark'] .text-\[\#e23448\],
+:root[data-theme='dark'] .text-\[\#c91f35\],
+:root[data-theme='dark'] .text-\[\#9d2738\],
+:root[data-theme='dark'] .text-\[\#9a4f5a\],
+:root[data-theme='dark'] .text-\[\#965764\],
+:root[data-theme='dark'] .text-\[\#8f2433\],
+:root[data-theme='dark'] .text-\[\#b6283a\],
+:root[data-theme='dark'] .text-\[\#b7707d\],
+:root[data-theme='dark'] .text-\[\#ffb4c0\] {
   color: var(--theme-accent-strong);
 }
 
 :root[data-theme='dark'] .bg-white,
+:root[data-theme='dark'] .bg-white\/70,
+:root[data-theme='dark'] .bg-white\/75,
+:root[data-theme='dark'] .bg-white\/80,
 :root[data-theme='dark'] .bg-white\/85,
-:root[data-theme='dark'] .bg-white\/90 {
-  background-color: rgba(16, 30, 46, 0.75);
+:root[data-theme='dark'] .bg-white\/90,
+:root[data-theme='dark'] .bg-white\/95 {
+  background-color: rgba(48, 43, 50, 0.8);
 }
 
 :root[data-theme='dark'] .bg-\[\#eef5ff\],
@@ -135,8 +156,17 @@ body {
 :root[data-theme='dark'] .bg-\[\#f6faff\],
 :root[data-theme='dark'] .bg-\[\#f9fcff\]\/92,
 :root[data-theme='dark'] .bg-\[\#f3f4f6\],
-:root[data-theme='dark'] .bg-\[\#fff5f5\] {
-  background-color: rgba(18, 38, 60, 0.78);
+:root[data-theme='dark'] .bg-\[\#fff5f5\],
+:root[data-theme='dark'] .bg-\[\#fff5f6\],
+:root[data-theme='dark'] .bg-\[\#fff1f3\],
+:root[data-theme='dark'] .bg-\[\#fff6f7\]\/92,
+:root[data-theme='dark'] .bg-\[\#fff6f7\],
+:root[data-theme='dark'] .bg-\[\#fff8f9\],
+:root[data-theme='dark'] .bg-\[\#fff7f8\],
+:root[data-theme='dark'] .bg-\[\#fff4f6\],
+:root[data-theme='dark'] .bg-\[\#ffeef2\],
+:root[data-theme='dark'] .bg-\[\#fff0f2\] {
+  background-color: rgba(56, 47, 53, 0.82);
 }
 
 :root[data-theme='dark'] .border-\[\#dbe7f5\],
@@ -145,13 +175,22 @@ body {
 :root[data-theme='dark'] .border-\[\#c7dbf0\],
 :root[data-theme='dark'] .border-\[\#c6d9ee\],
 :root[data-theme='dark'] .border-\[\#d3e2f2\],
-:root[data-theme='dark'] .border-\[\#deebf7\] {
-  border-color: rgba(116, 151, 188, 0.34);
+:root[data-theme='dark'] .border-\[\#deebf7\],
+:root[data-theme='dark'] .border-\[\#ffd7dd\],
+:root[data-theme='dark'] .border-\[\#ffc9d2\],
+:root[data-theme='dark'] .border-\[\#ffb9c2\],
+:root[data-theme='dark'] .border-\[\#ffd4da\],
+:root[data-theme='dark'] .border-\[\#ffdce2\],
+:root[data-theme='dark'] .border-\[\#f3a7b3\],
+:root[data-theme='dark'] .border-\[\#d58f9b\] {
+  border-color: rgba(191, 132, 144, 0.38);
 }
 
 :root[data-theme='dark'] .hover\:bg-\[\#eef5ff\]:hover,
-:root[data-theme='dark'] .hover\:bg-\[\#e9f2fc\]:hover {
-  background-color: rgba(47, 82, 117, 0.74);
+:root[data-theme='dark'] .hover\:bg-\[\#e9f2fc\]:hover,
+:root[data-theme='dark'] .hover\:bg-\[\#fff1f3\]:hover,
+:root[data-theme='dark'] .hover\:bg-\[\#fff7f8\]:hover {
+  background-color: rgba(84, 55, 62, 0.78);
 }
 
 :root[data-theme='dark'] .line-through {
